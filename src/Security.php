@@ -65,8 +65,12 @@ if ( ! class_exists( '\WPS\WP\Security' ) ) {
 				add_filter( 'auto_update_theme', '__return_true' );
 			}
 
-			if ( $this->args['disable_auto_update'] ) {
+			if ( $this->args['disallow_file_edit'] ) {
 				self::define( 'DISALLOW_FILE_EDIT', true );
+			}
+
+			if ( $this->args['force_ssl_admin'] ) {
+				self::define( 'FORCE_SSL_ADMIN', true );
 			}
 
 			// Prevent user enumeration.
@@ -74,6 +78,7 @@ if ( ! class_exists( '\WPS\WP\Security' ) ) {
 
 			// Prevent comments from being too long.
 			add_action( 'pre_comment_content', array( $this, 'die_on_long_comment' ), PHP_INT_MAX );
+
 		}
 
 		/**
