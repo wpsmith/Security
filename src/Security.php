@@ -28,7 +28,7 @@ if ( ! class_exists( '\WPS\WP\Security' ) ) {
 			'force_strong_passwords' => true,
 			'disable_auto_update'    => false,
 			'disallow_file_edit'     => true,
-			'comment_length_limit' => 13000,
+			'comment_length_limit'   => 13000,
 		);
 
 		/**
@@ -161,11 +161,28 @@ if ( ! class_exists( '\WPS\WP\Security' ) ) {
 		 */
 		public function die_on_long_comment( $comment_content ) {
 			if ( strlen( $comment_content ) > $this->args['comment_length_limit'] ) {
-				wp_die(
-				/*message*/ 'This comment is longer than the maximum allowed size and has been dropped.',
-					/*title*/ 'Comment Declined',
-					/*args*/ array( 'response' => 413 )
-				);
+				$comment = isset( $_POST['comment'] ) ? $_POST['comment'] : '';
+				$title   = 'Comment Declined';
+				$message = 'This comment is longer than the maximum allowed size (' . $this->args['comment_length_limit'] . ') and has been dropped.' .
+				           '<br>' .
+				           __( 'You wrote:', 'wps' ) .
+				           '<br>' .
+				           $comment;
+
+				if ( function_exists( '__' ) ) {
+					wp_die(
+						$message
+						,
+						__( $title, 'wps' ),
+						array( 'response' => 413 )
+					);
+				} else {
+					wp_die(
+						$message,
+						$title,
+						array( 'response' => 413 )
+					);
+				}
 			}
 
 			return $comment_content;
