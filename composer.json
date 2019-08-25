@@ -27,6 +27,7 @@
   "require": {
     "php": ">=5.6.0",
     "wpsmith/singleton": "^1.0.0",
+    "lkwdwrd/wp-muplugin-loader": "~1.0.0",
     "wpackagist-plugin/limit-login-attempts-reloaded": "2.9.0",
     "wpackagist-plugin/force-strong-passwords": "1.8.0"
   },
