@@ -27,8 +27,8 @@
   "require": {
     "php": ">=5.6.0",
     "wpsmith/singleton": "^1.0.0",
-    "wpackagist-plugin/force-strong-passwords":"*",
-    "wpackagist-plugin/limit-login-attempts-reloaded":"*"
+    "wpackagist-plugin/force-strong-passwords":"dev-master",
+    "wpackagist-plugin/limit-login-attempts-reloaded":"dev-master"
   },
   "autoload": {
     "psr-4": {
