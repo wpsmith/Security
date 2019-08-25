@@ -30,6 +30,18 @@
     "wpackagist-plugin/limit-login-attempts-reloaded": "2.9.0",
     "wpackagist-plugin/force-strong-passwords": "1.8.0"
   },
+  "extra": {
+    "installer-paths": {
+      "../../../../wp-content/mu-plugins/{$name}/": [
+        "wpackagist-plugin/limit-login-attempts-reloaded",
+        "wpackagist-plugin/force-strong-passwords",
+        "type:wordpress-muplugin"
+      ],
+      "../../../../wp-content/plugins/{$name}/": [
+        "type:wordpress-plugin"
+      ]
+    }
+  },
   "autoload": {
     "psr-4": {
       "WPS\\WP\\": "src/"
