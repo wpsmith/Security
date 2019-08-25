@@ -19,6 +19,8 @@ if ( ! class_exists( '\WPS\WP\Security' ) ) {
 	class Security extends Singleton {
 
 		/**
+		 * Default args.
+		 *
 		 * @var array
 		 */
 		public $defaults = array(
@@ -26,7 +28,15 @@ if ( ! class_exists( '\WPS\WP\Security' ) ) {
 			'force_strong_passwords' => true,
 			'disable_auto_update'    => false,
 			'disallow_file_edit'     => true,
+			'comment_length_limit' => 13000,
 		);
+
+		/**
+		 * The args.
+		 *
+		 * @var array
+		 */
+		public $args = array();
 
 		/**
 		 * Security constructor.
@@ -34,18 +44,18 @@ if ( ! class_exists( '\WPS\WP\Security' ) ) {
 		 * @param string[] $post_types Array of post type names.
 		 */
 		protected function __construct( $args = array() ) {
-			$args = wp_parse_args( $args, $this->defaults );
+			$this->args = wp_parse_args( $args, $this->defaults );
 
 			// Throttle the heartbeat
-			if ( 'autosave_only' === $args['heartbeat'] ) {
+			if ( 'autosave_only' === $this->args['heartbeat'] ) {
 				Admin\HeartbeatThrottle::get_instance();
 			}
 
-			if ( $args['force_strong_passwords'] ) {
+			if ( $this->args['force_strong_passwords'] ) {
 				require __DIR__ . '/force-strong-passwords/slt-force-strong-passwords.php';
 			}
 
-			if ( $args['disable_auto_update'] ) {
+			if ( $this->args['disable_auto_update'] ) {
 				$this->disable_auto_update();
 			} else {
 				// Set to auto-update WP to minor versions.
@@ -55,12 +65,15 @@ if ( ! class_exists( '\WPS\WP\Security' ) ) {
 				add_filter( 'auto_update_theme', '__return_true' );
 			}
 
-			if ( $args['disable_auto_update'] ) {
+			if ( $this->args['disable_auto_update'] ) {
 				self::define( 'DISALLOW_FILE_EDIT', true );
 			}
 
 			// Prevent user enumeration.
 			add_action( 'parse_request', array( __CLASS__, 'sec_prevent_user_enumeration' ), 999 );
+
+			// Prevent comments from being too long.
+			add_action( 'pre_comment_content', array( $this, 'die_on_long_comment' ), PHP_INT_MAX );
 		}
 
 		/**
@@ -137,6 +150,25 @@ if ( ! class_exists( '\WPS\WP\Security' ) ) {
 				header( 'HTTP/1.0 403 Forbidden' );
 			}
 			die;
+		}
+
+		/**
+		 * Dies when string/comment is greater than 13000 characters.
+		 *
+		 * @param string $comment_content The comment content.
+		 *
+		 * @return mixed
+		 */
+		public function die_on_long_comment( $comment_content ) {
+			if ( strlen( $comment_content ) > $this->args['comment_length_limit'] ) {
+				wp_die(
+				/*message*/ 'This comment is longer than the maximum allowed size and has been dropped.',
+					/*title*/ 'Comment Declined',
+					/*args*/ array( 'response' => 413 )
+				);
+			}
+
+			return $comment_content;
 		}
 	}
 }
