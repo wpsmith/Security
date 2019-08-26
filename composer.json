@@ -32,11 +32,9 @@
   },
   "extra": {
     "installer-paths": {
-      "../../../../{$name}/": [
+      "src/{$name}/": [
         "wpackagist-plugin/limit-login-attempts-reloaded",
-        "wpackagist-plugin/force-strong-passwords",
-        "type:wordpress-muplugin",
-        "type:wordpress-plugin"
+        "wpackagist-plugin/force-strong-passwords"
       ]
     }
   },
