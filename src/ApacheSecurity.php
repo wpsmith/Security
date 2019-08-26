@@ -23,9 +23,10 @@ if ( ! class_exists( '\WPS\WP\ApacheSecurity' ) ) {
 		public $defaults = array(
 			'heartbeat'              => 'autosave_only',
 			'force_strong_passwords' => true,
-			'limit_login_attempts' => true,
+			'limit_login_attempts'   => true,
 			'disable_auto_update'    => false,
 			'disallow_file_edit'     => true,
+			'force_ssl_admin'        => true,
 			'comment_length_limit'   => 13000,
 			'hotlink_placeholder'    => '',
 //			'hotlink_placeholder'    => 'https://i.imgur.com/removed.png',

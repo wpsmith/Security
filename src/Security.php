@@ -29,6 +29,7 @@ if ( ! class_exists( '\WPS\WP\Security' ) ) {
 			'force_strong_passwords' => true,
 			'disable_auto_update'    => false,
 			'disallow_file_edit'     => true,
+			'force_ssl_admin'        => true,
 			'comment_length_limit'   => 13000,
 		);
 
