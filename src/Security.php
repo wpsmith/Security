@@ -52,7 +52,7 @@ if ( ! class_exists( '\WPS\WP\Security' ) ) {
 			}
 
 			if ( $this->args['force_strong_passwords'] ) {
-				require __DIR__ . '/force-strong-passwords/slt-force-strong-passwords.php';
+//				require __DIR__ . '/force-strong-passwords/slt-force-strong-passwords.php';
 			}
 
 			if ( $this->args['disable_auto_update'] ) {
