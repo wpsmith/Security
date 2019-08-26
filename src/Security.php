@@ -25,6 +25,7 @@ if ( ! class_exists( '\WPS\WP\Security' ) ) {
 		 */
 		public $defaults = array(
 			'heartbeat'              => 'autosave_only',
+			'limit_login_attempts'   => true,
 			'force_strong_passwords' => true,
 			'disable_auto_update'    => false,
 			'disallow_file_edit'     => true,
@@ -51,8 +52,12 @@ if ( ! class_exists( '\WPS\WP\Security' ) ) {
 				Admin\HeartbeatThrottle::get_instance();
 			}
 
-			if ( $this->args['force_strong_passwords'] ) {
-//				require __DIR__ . '/force-strong-passwords/slt-force-strong-passwords.php';
+			if ( $this->args['force_strong_passwords'] && file_exists( __DIR__ . '/force-strong-passwords/slt-force-strong-passwords.php' ) ) {
+				require __DIR__ . '/force-strong-passwords/slt-force-strong-passwords.php';
+			}
+
+			if ( $this->args['limit_login_attempts'] && file_exists( __DIR__ . '/limit-login-attempts-reloaded/limit-login-attempts-reloaded.php' ) ) {
+				require __DIR__ . '/limit-login-attempts-reloaded/limit-login-attempts-reloaded.php';
 			}
 
 			if ( $this->args['disable_auto_update'] ) {
